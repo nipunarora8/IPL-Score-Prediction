@@ -4,7 +4,7 @@ This is a Machine Learning based model used to predict the first innings score o
 The Indian Premier League is a professional Twenty20 cricket league in India contested during March or April and May of every year by eight teams representing eight different cities in India. The league was founded by the Board of Control for Cricket in India in 2008.<br>
 
 We used a Linear Regression based model to find out the best predictions based on the training dataset. <br>
-The training dataset can also be found on Kaggle.<br?
+The training dataset can also be found on Kaggle.<br>
 
 We used flask to build a webapp based on the model we got after training on the dataset.<br>
 You can find the webapp on: https://ipl-score-prediction-nipun.herokuapp.com/<br>
