@@ -1,7 +1,13 @@
 from flask import Flask,render_template, request
 import pickle
 import numpy as np
+import pymongo
+from pymongo import MongoClient
 app = Flask(__name__)
+
+cluster = MongoClient("mongodb+srv://abcd:qwertyuiop@cluster0.0ihqm.mongodb.net/ipl?retryWrites=true&w=majority")
+db=cluster['ipl']
+collection=db['data']
 
 filename = 'ipl_model.pkl'
 regressor = pickle.load(open(filename, 'rb'))
@@ -60,6 +66,20 @@ def predict():
         
         data = np.array([temp_array])
         my_prediction = int(regressor.predict(data)[0])
+
+        my_data={
+            'batting-team': batting_team,
+            'bowling-team': bowling_team,
+            'overs': overs,
+            'score': runs,
+            'wickets': wickets,
+            'runs_in_last5':runs_in_prev_5,
+            'wickets_in_last5':wickets_in_prev_5,
+            'pred':my_prediction
+            }
+        
+        collection.insert_one(my_data)
+	    
         
         lower=my_prediction-5
         upper=my_prediction+5
@@ -67,9 +87,13 @@ def predict():
         if lower<runs:
             lower=runs
             upper=runs+10
+	    
+
+        
+
         return render_template('result.html', lower_limit = lower, upper_limit = upper)
-
-
+	
+	
 
 @app.route('/')
 @app.route('/home')
